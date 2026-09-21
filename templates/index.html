@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>bramhastra26 — Verified & Empathetic AI</title>
+    <meta name="description" content="bramhastra26 is an ultra-intelligent, deeply empathetic, strictly factual AI chatbot with multilingual translation, dynamic image generation, and cross-device accessibility.">
+    
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Marked.js for Markdown & Highlight.js for Code Highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Favicon & Official Logo -->
+    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/bramhastra26_logo.jpg') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/bramhastra26_logo.jpg') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/bramhastra26_logo.jpg') }}">
+</head>
+<body class="theme-light">
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- Sidebar Navigation (Desktop & Mobile Drawer) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='images/bramhastra26_logo.jpg') }}" alt="bramhastra26" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">bramhastra26</span>
+                        <span class="brand-badge">Verified AI</span>
+                    </div>
+                </div>
+                <button class="btn-icon mobile-only" id="close-sidebar-btn" title="Close Menu">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Usage & Plan Card -->
+            <div class="usage-card">
+                <div class="usage-card-header">
+                    <span class="usage-title" id="tier-badge">Free Plan</span>
+                    <span class="usage-rate" id="tier-rate">20 Queries Free</span>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="query-progress-bar" style="width: 0%;"></div>
+                </div>
+                
+                <div class="usage-stats">
+                    <span id="usage-text"><strong id="query-count-display">0</strong> / 20 Questions</span>
+                    <span id="remaining-text" class="remaining-highlight">20 free queries left</span>
+                </div>
+
+                <div class="query-status-note" id="query-status-note">
+                    <i class="fa-solid fa-circle-info"></i> Payment accepted only after 20 free queries expire
+                </div>
+
+                <button class="btn-upgrade pulse-animation" id="upgrade-btn">
+                    <i class="fa-solid fa-gem"></i> <span id="upgrade-btn-text">Free Queries Active</span>
+                </button>
+            </div>
+
+            <!-- Quick Action Links -->
+            <div class="sidebar-section">
+                <span class="section-label">Features & Controls</span>
+                    <button class="nav-item nav-scanner-item" id="nav-scanner-btn">
+                        <i class="fa-solid fa-qrcode" style="color: var(--accent-gold);"></i>
+                        <span>Scan & Pay (₹5/Q)</span>
+                    </button>
+                    <button class="nav-item" id="nav-new-chat">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>New Conversation</span>
+                    </button>
+                    <button class="nav-item" id="nav-image-studio">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>AI Visuals & Images</span>
+                    </button>
+                    <button class="nav-item" id="nav-translator">
+                        <i class="fa-solid fa-language"></i>
+                        <span>Instant Translator</span>
+                    </button>
+                    <button class="nav-item" id="nav-settings">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>API Key & Settings</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Verified Pillars -->
+            <div class="sidebar-section">
+                <span class="section-label">Core Guarantees</span>
+                <ul class="guarantee-list">
+                    <li><i class="fa-solid fa-circle-check text-success"></i> Strict Verified Knowledge</li>
+                    <li><i class="fa-solid fa-circle-check text-success"></i> No Unnecessary Fluff</li>
+                    <li><i class="fa-solid fa-heart text-danger"></i> Empathetic Feeling AI</li>
+                    <li><i class="fa-solid fa-globe text-info"></i> All Global Languages</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle-btn" id="theme-toggle">
+                    <i class="fa-solid fa-sun"></i>
+                    <span id="theme-text">White Theme</span>
+                </button>
+                <div class="server-status">
+                    <span class="status-dot online"></span>
+                    <span>Global Access Active</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <!-- Top Navbar -->
+            <header class="chat-header">
+                <div class="header-left">
+                    <button class="btn-icon mobile-only" id="menu-btn" title="Open Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <img src="{{ url_for('static', filename='images/bramhastra26_logo.jpg') }}" alt="bramhastra26" class="header-brand-img">
+                    <div class="header-title-box">
+                        <h1 class="header-title">bramhastra26</h1>
+                        <span class="header-subtitle">Strictly Factual & Empathetic AI</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <!-- Scanner Quick Button -->
+                    <button class="btn-icon qr-pulse-btn" id="header-qr-btn" title="Scan & Pay (₹5/Question)">
+                        <i class="fa-solid fa-qrcode" style="color: var(--accent-gold);"></i>
+                    </button>
+
+                    <!-- Language Selector -->
+                    <div class="lang-selector-wrapper">
+                        <i class="fa-solid fa-language lang-icon"></i>
+                        <select id="language-select" class="lang-select" title="Select Chat Language">
+                            <option value="Auto-Detect">🌐 Auto-Detect</option>
+                            <option value="English">English</option>
+                            <option value="Hindi">हिन्दी (Hindi)</option>
+                            <option value="Telugu">తెలుగు (Telugu)</option>
+                            <option value="Tamil">தமிழ் (Tamil)</option>
+                            <option value="Marathi">मराठी (Marathi)</option>
+                            <option value="Bengali">বাংলা (Bengali)</option>
+                            <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+                            <option value="Gujarati">ગુજરાતી (Gujarati)</option>
+                            <option value="Spanish">Español (Spanish)</option>
+                            <option value="French">Français (French)</option>
+                            <option value="German">Deutsch (German)</option>
+                            <option value="Arabic">العربية (Arabic)</option>
+                            <option value="Japanese">日本語 (Japanese)</option>
+                            <option value="Russian">Русский (Russian)</option>
+                        </select>
+                    </div>
+
+                    <!-- Usage Pill -->
+                    <div class="query-counter-pill" id="header-query-pill" title="Free questions remaining">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span id="header-query-count">20 Free Left</span>
+                    </div>
+
+                    <!-- Clear Chat -->
+                    <button class="btn-icon" id="clear-chat-btn" title="Clear Conversation">
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Messages Window -->
+            <div class="chat-window" id="chat-window">
+                <!-- Welcome Banner -->
+                <div class="welcome-card" id="welcome-card">
+                    <div class="welcome-avatar">
+                        <img src="{{ url_for('static', filename='images/bramhastra26_logo.jpg') }}" alt="bramhastra26" class="welcome-logo-img">
+                    </div>
+                    <h2>Greetings, I am <span class="text-gradient">bramhastra26</span></h2>
+                    <p class="welcome-desc">
+                        Your factual, ultra-direct, and empathetic AI companion. Connected to Instagram intelligence, dynamic YouTube music playing, live Google link searching, verified knowledge, and image generation.
+                    </p>
+
+                    <!-- Limit Notice -->
+                    <div class="limit-banner" id="welcome-limit-banner">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span id="welcome-limit-text">You have <strong>20 Free Questions</strong>. Payment is only accepted after all 20 free questions have expired. When expired, scan Koushik MR's QR code to recharge extra questions at <strong>₹5 per question</strong>!</span>
+                    </div>
+
+                    <!-- Prompt Starters -->
+                    <div class="prompt-starters">
+                        <button class="starter-chip" data-prompt="How does the Instagram Reels algorithm rank videos to get more reach in 2026?">
+                            <i class="fa-brands fa-instagram" style="color: #e1306c;"></i> Instagram Reels Algorithm
+                        </button>
+                        <button class="starter-chip" data-prompt="Play song Believer on YouTube">
+                            <i class="fa-brands fa-youtube" style="color: #ff0000;"></i> Play Song on YouTube
+                        </button>
+                        <button class="starter-chip" data-prompt="Give me the link of Python official documentation">
+                            <i class="fa-brands fa-google text-info"></i> Google Link Search
+                        </button>
+                        <button class="starter-chip" data-prompt="Generate an image of a futuristic Indian cyber warrior">
+                            <i class="fa-solid fa-image" style="color: var(--accent-gold);"></i> AI Image Generator
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages container -->
+                <div class="messages-list" id="messages-list"></div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <footer class="chat-input-area">
+                <!-- Image Prompt Helper Bar -->
+                <div class="input-helper-bar" id="input-helper-bar" style="display: none;">
+                    <span><i class="fa-solid fa-wand-magic-sparkles"></i> Image Generation Mode Active</span>
+                    <button id="cancel-image-mode" class="btn-link">Cancel</button>
+                </div>
+
+                <div class="input-box-wrapper">
+                    <button class="btn-input-action" id="btn-image-mode" title="Request an Image">
+                        <i class="fa-solid fa-image"></i>
+                    </button>
+                    
+                    <button class="btn-input-action" id="btn-voice-input" title="Voice Input (Speech to Text)">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+
+                    <textarea 
+                        id="user-input" 
+                        class="chat-textarea" 
+                        placeholder="Ask bramhastra26 anything (factual, empathetic, images, any language)..."
+                        rows="1"
+                        maxlength="3000"></textarea>
+
+                    <button class="btn-send" id="btn-send" title="Send Message">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                </div>
+
+                <div class="input-footer-info">
+                    <span>bramhastra26 strictly verifies facts • 20 Free queries, then ₹5/question • Cross-device ready</span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- MODAL: Premium Upgrade & Scanner (₹5/Question) -->
+    <div class="modal-overlay" id="upgrade-modal" style="display: none;">
+        <div class="modal-card modal-card-scanner">
+            <div class="modal-header">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge scanner-badge">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <h3>bramhastra26 Premium Activation</h3>
+                        <p class="modal-subtitle">Official UPI Payment Gateway • ₹5 per question</p>
+                    </div>
+                </div>
+                <button class="modal-close" id="close-upgrade-modal">&times;</button>
+            </div>
+
+            <div class="modal-body modal-scanner-body">
+                <!-- Free Queries Active Banner -->
+                <div class="modal-alert-banner banner-locked" id="modal-free-active-banner">
+                    <div class="banner-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="banner-text">
+                        <strong id="modal-free-title">Free Queries Active (<span id="modal-free-count">20</span> Left)</strong>
+                        <p id="modal-free-desc">You have free queries remaining! Payment is only accepted after all 20 free queries have expired. Please enjoy your free questions first.</p>
+                    </div>
+                </div>
+
+                <!-- 20 Queries Expired Banner -->
+                <div class="modal-alert-banner banner-expired" id="modal-expired-banner" style="display: none;">
+                    <div class="banner-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="banner-text">
+                        <strong>Your 20 Free Queries Have Expired!</strong>
+                        <p>You have completed your free 20 questions quota. Please scan Koushik MR's UPI QR code below to recharge extra questions at <strong>₹5 per question</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Premium Active Banner -->
+                <div class="modal-alert-banner banner-premium" id="modal-premium-banner" style="display: none;">
+                    <div class="banner-icon"><i class="fa-solid fa-gem"></i></div>
+                    <div class="banner-text">
+                        <strong>Extra Queries Active</strong>
+                        <p>You have <strong id="modal-premium-credits">0</strong> extra questions available. You can scan to recharge more chances at ₹5/question.</p>
+                    </div>
+                </div>
+
+                <div class="scanner-gateway-layout">
+                    <!-- Left: Google Pay QR Scanner -->
+                    <div class="scanner-visual-section">
+                        <div class="merchant-badge">
+                            <div class="merchant-avatar">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <div class="merchant-info">
+                                <span class="merchant-name">KOUSHIK MR</span>
+                                <span class="merchant-status"><i class="fa-solid fa-circle-check text-success"></i> Google Pay Verified</span>
+                            </div>
+                        </div>
+
+                        <div class="scanner-frame-wrapper">
+                            <div class="scanner-frame" id="scanner-frame-box">
+                                <img src="{{ url_for('static', filename='images/upi_scanner.jpg') }}" alt="Koushik MR Google Pay QR Scanner" class="upi-scanner-image">
+                                <div class="laser-scanner-line" id="laser-line"></div>
+                                <span class="corner-bracket top-left"></span>
+                                <span class="corner-bracket top-right"></span>
+                                <span class="corner-bracket bottom-left"></span>
+                                <span class="corner-bracket bottom-right"></span>
+
+                                <!-- Scanner Lock Overlay during Free Queries -->
+                                <div class="scanner-lock-overlay" id="scanner-lock-overlay">
+                                    <div class="lock-circle">
+                                        <i class="fa-solid fa-lock"></i>
+                                    </div>
+                                    <span class="lock-title">Payment Locked</span>
+                                    <span class="lock-desc" id="lock-overlay-text">Free Queries Active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="supported-apps">
+                            <span><i class="fa-brands fa-google-pay"></i> GPay</span>
+                            <span>PhonePe</span>
+                            <span>Paytm</span>
+                            <span>BHIM / UPI</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Pricing Packs & Unlock -->
+                    <div class="scanner-pricing-section">
+                        <div class="pricing-header-row">
+                            <span class="pricing-label">Choose Questions Pack:</span>
+                            <span class="rate-badge">₹5 / Question</span>
+                        </div>
+
+                        <div class="pack-grid pack-grid-compact">
+                            <label class="pack-card" data-price="5" data-qty="1">
+                                <input type="radio" name="recharge-pack" value="pack_1">
+                                <div class="pack-content">
+                                    <span class="pack-qty">1 Question</span>
+                                    <span class="pack-price">₹5</span>
+                                    <span class="pack-rate">₹5/Q</span>
+                                </div>
+                            </label>
+
+                            <label class="pack-card" data-price="25" data-qty="5">
+                                <input type="radio" name="recharge-pack" value="pack_5">
+                                <div class="pack-content">
+                                    <span class="pack-qty">5 Questions</span>
+                                    <span class="pack-price">₹25</span>
+                                    <span class="pack-rate">₹5/Q</span>
+                                </div>
+                            </label>
+
+                            <label class="pack-card selected" data-price="50" data-qty="10">
+                                <input type="radio" name="recharge-pack" value="pack_10" checked>
+                                <div class="pack-content">
+                                    <span class="pack-badge">Best Value</span>
+                                    <span class="pack-qty">10 Questions</span>
+                                    <span class="pack-price">₹50</span>
+                                    <span class="pack-rate">₹5/Q</span>
+                                </div>
+                            </label>
+
+                            <label class="pack-card" data-price="100" data-qty="20">
+                                <input type="radio" name="recharge-pack" value="pack_20">
+                                <div class="pack-content">
+                                    <span class="pack-qty">20 Questions</span>
+                                    <span class="pack-price">₹100</span>
+                                    <span class="pack-rate">₹5/Q</span>
+                                </div>
+                            </label>
+
+                            <label class="pack-card" data-price="250" data-qty="50">
+                                <input type="radio" name="recharge-pack" value="pack_50">
+                                <div class="pack-content">
+                                    <span class="pack-qty">50 Questions</span>
+                                    <span class="pack-price">₹250</span>
+                                    <span class="pack-rate">₹5/Q</span>
+                                </div>
+                            </label>
+
+                            <label class="pack-card tester-pack" data-price="0" data-qty="9999">
+                                <input type="radio" name="recharge-pack" value="unlimited">
+                                <div class="pack-content">
+                                    <span class="pack-badge tester-badge">Test Mode</span>
+                                    <span class="pack-qty">Sandbox Demo</span>
+                                    <span class="pack-price">Free</span>
+                                    <span class="pack-rate">Instant Test</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Amount Display Box -->
+                        <div class="amount-due-card">
+                            <div class="amount-due-info">
+                                <span class="amount-title">Total Amount to Scan:</span>
+                                <span class="amount-value" id="display-amount-due">₹50</span>
+                            </div>
+                            <span class="amount-subtitle" id="display-pack-desc">For 10 Questions at ₹5 per question</span>
+                        </div>
+
+                        <!-- UTR Reference -->
+                        <div class="form-group utr-group">
+                            <label for="upi-utr-input"><i class="fa-solid fa-receipt"></i> 12-Digit UPI Ref / UTR No. (Optional)</label>
+                            <input type="text" id="upi-utr-input" placeholder="e.g. 4251XXXXXXXX or leave blank" class="form-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-upgrade-modal">Close</button>
+                <button class="btn-primary-glow" id="confirm-recharge-btn">
+                    <i class="fa-solid fa-bolt"></i> I Have Paid — Unlock Questions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Settings & Groq API Key -->
+    <div class="modal-overlay" id="settings-modal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <div>
+                        <h3>bramhastra26 Settings</h3>
+                        <p class="modal-subtitle">Configure Groq API Key & Preferences</p>
+                    </div>
+                </div>
+                <button class="modal-close" id="close-settings-modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="groq-api-key-input">Groq API Key</label>
+                    <div class="api-input-wrap">
+                        <input type="password" id="groq-api-key-input" placeholder="gsk_..." class="form-input">
+                        <button class="btn-icon" id="toggle-key-visibility" type="button">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <small class="form-hint">Stored securely in your local <code>.env</code> file. Get your free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a></small>
+                </div>
+
+                <div class="settings-status-box" id="api-key-status-box">
+                    <i class="fa-solid fa-circle-check text-success"></i>
+                    <span id="api-key-status-text">Checking Groq status...</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Active Model</label>
+                    <input type="text" value="llama-3.3-70b-versatile (Ultra-fast & Factual)" disabled class="form-input disabled">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" id="close-settings-btn">Close</button>
+                <button class="btn-primary-glow" id="save-api-key-btn">Save Key</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Language Translator Utility -->
+    <div class="modal-overlay" id="translator-modal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <div>
+                        <h3>bramhastra26 Translator</h3>
+                        <p class="modal-subtitle">Instant factual & emotional translation into any language</p>
+                    </div>
+                </div>
+                <button class="modal-close" id="close-translator-modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Text to Translate</label>
+                    <textarea id="translate-input" class="form-input" rows="3" placeholder="Enter text in any language..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Target Language</label>
+                    <select id="modal-target-lang" class="form-input">
+                        <option value="Hindi">हिन्दी (Hindi)</option>
+                        <option value="English">English</option>
+                        <option value="Telugu">తెలుగు (Telugu)</option>
+                        <option value="Tamil">தமிழ் (Tamil)</option>
+                        <option value="Marathi">मराठी (Marathi)</option>
+                        <option value="Bengali">বাংলা (Bengali)</option>
+                        <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+                        <option value="Gujarati">ગુજરાતી (Gujarati)</option>
+                        <option value="Spanish">Español (Spanish)</option>
+                        <option value="French">Français (French)</option>
+                        <option value="German">Deutsch (German)</option>
+                        <option value="Arabic">العربية (Arabic)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="translated-result-wrap" style="display: none;">
+                    <label>Translation Result</label>
+                    <div class="translation-result-box" id="translation-result"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" id="close-translator-btn">Close</button>
+                <button class="btn-primary-glow" id="execute-translate-btn">Translate Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Image Lightbox / Fullscreen Viewer -->
+    <div class="modal-overlay lightbox-overlay" id="lightbox-modal" style="display: none;">
+        <div class="lightbox-card">
+            <button class="lightbox-close" id="close-lightbox">&times;</button>
+            <div class="lightbox-img-wrap">
+                <img id="lightbox-img" src="" alt="bramhastra26 visual preview">
+            </div>
+            <div class="lightbox-footer">
+                <span id="lightbox-caption"></span>
+                <a id="lightbox-download" href="#" target="_blank" download="bramhastra26_image.jpg" class="btn-secondary">
+                    <i class="fa-solid fa-download"></i> Download Full Resolution
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client-side script -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
